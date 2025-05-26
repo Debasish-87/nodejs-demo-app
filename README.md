@@ -18,3 +18,6 @@ This project automates the build, test, and deployment of a Node.js web app usin
 - Push code to `main` branch
 - GitHub Actions will handle build & push
 
+![App Screenshot](images/dockerimagefullwithpipeline.jpeg)
+
+![App Screenshot](images/githubactionsuccesfullyrun.jpeg)
