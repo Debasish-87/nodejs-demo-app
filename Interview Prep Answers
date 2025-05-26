@@ -1,0 +1,97 @@
+### 1️⃣ **What is CI/CD?**
+
+CI/CD stands for:
+
+* **Continuous Integration (CI)**: Automatically building and testing code when changes are pushed, ensuring integration happens smoothly.
+* **Continuous Delivery/Deployment (CD)**: Automatically delivering or deploying the application to a target environment after CI passes.
+  CI/CD pipelines ensure fast, reliable software delivery by automating build, test, and deploy processes.
+
+---
+
+### 2️⃣ **How do GitHub Actions work?**
+
+GitHub Actions is a **CI/CD service** provided by GitHub. It allows you to:
+
+* Define **workflows** (YAML files) triggered by events like `push`, `pull_request`, or `schedule`.
+* Each workflow contains **jobs**, and each job runs in a **runner** (e.g., `ubuntu-latest`).
+* Steps inside jobs run scripts or use predefined **actions** (like `checkout`, `docker/login-action`).
+  GitHub provides **hosted runners**, so you don't need your own server.
+
+---
+
+### 3️⃣ **What are runners?**
+
+Runners are **virtual machines** that execute your workflow jobs:
+
+* **Hosted runners**: Provided by GitHub (e.g., `ubuntu-latest`).
+* **Self-hosted runners**: Your own machines, useful for custom environments or high-performance tasks.
+
+---
+
+### 4️⃣ **Difference between jobs and steps**
+
+| Jobs                                                    | Steps                                                           |
+| ------------------------------------------------------- | --------------------------------------------------------------- |
+| A job is a group of steps that runs in the same runner. | A step is an individual task (e.g., `checkout`, `run` command). |
+| Can run in parallel or sequentially with other jobs.    | Always runs sequentially within a job.                          |
+| Example: Build, Test, Deploy as separate jobs.          | Example: Build, push, test steps within the **build** job.      |
+
+---
+
+### 5️⃣ **How to secure secrets in GitHub Actions?**
+
+* Go to your **GitHub repo → Settings → Secrets and variables → Actions**.
+* Add **secrets** (like `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`).
+* Access them in your workflow using:
+
+  ```yaml
+  ${{ secrets.SECRET_NAME }}
+  ```
+* Secrets are **encrypted** and **masked** in logs.
+
+---
+
+### 6️⃣ **Explain the Docker build-push workflow**
+
+1. **Build the Docker image**:
+
+   ```bash
+   docker build -t username/repo:tag .
+   ```
+2. **Login to DockerHub**:
+
+   ```bash
+   docker login -u username -p token
+   ```
+3. **Push the image**:
+
+   ```bash
+   docker push username/repo:tag
+   ```
+
+In CI/CD (like GitHub Actions), these steps are automated to build and deploy the app to DockerHub whenever you push code.
+
+---
+
+### 7️⃣ **How can you test a CI/CD pipeline locally?**
+
+* Use **`act`**: a CLI tool that simulates GitHub Actions locally.
+
+  ```bash
+  act
+  ```
+* Or, test individual Docker commands locally:
+
+  * Build:
+
+    ```bash
+    docker build -t test-app .
+    ```
+  * Run:
+
+    ```bash
+    docker run -d -p 3000:3000 test-app
+    ```
+* For a complete test, push to a **test branch** and monitor pipeline runs in GitHub Actions.
+
+--
